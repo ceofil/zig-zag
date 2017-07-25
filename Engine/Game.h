@@ -26,6 +26,7 @@
 #include "FrameTimer.h"
 #include "Ball.h"
 #include "Path.h"
+#include "Text.h"
 
 class Game
 {
@@ -48,5 +49,7 @@ private:
 	FrameTimer ft;
 	Ball ball;
 	Path path;
+	Text txt;
+	int score = 0;
 	/********************************/
 };

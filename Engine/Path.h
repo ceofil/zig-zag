@@ -10,7 +10,7 @@ public:
 	Path( float speed );
 	~Path();
 	void Draw( Graphics& gfx );
-	void Update( float dt );
+	void Update( float dt, int& score );
 
 private:
 	struct Corner

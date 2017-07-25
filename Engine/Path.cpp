@@ -32,12 +32,18 @@ void Path::Draw(Graphics & gfx)
 	}
 }
 
-void Path::Update(float dt)
+void Path::Update(float dt, int& score)
 {
 	Corner* ptr = first;
 	while (ptr)
 	{
-		ptr->pos.y += dt * speed * perspective;
+		float delta = dt * speed * perspective;
+		if (ptr->pos.y < Graphics::ScreenHeight / 2 && ptr->pos.y + delta > Graphics::ScreenHeight / 2)
+		{
+			score++;
+		}
+
+		ptr->pos.y += delta;
 		ptr = ptr->next;
 	}
 	if (last->previous->pos.y > Graphics::ScreenHeight )
