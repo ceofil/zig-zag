@@ -7,12 +7,36 @@ class Path
 {
 public:
 	Path() = default;
-	void Draw(Graphics& gfx);
-private:
+	Path( float speed );
+	~Path();
+	void Draw( Graphics& gfx );
+	void Update( float dt );
 
+private:
+	struct Corner
+	{
+		Corner() = default;
+		Corner(Corner* previous, Corner* next, Vec2 pos);
+		Corner* previous;
+		Corner* next;
+		Vec2 pos;
+	};
+
+private:
+	Corner* first = nullptr;
+	Corner* last = nullptr;
+	void AddCorner(Vec2 pos);
+	void DeleteLastCorner();
+	void SpawnCorner();
+
+private:
+	static constexpr float width = 50.0f;
+	float speed;
+	Vec2 cornerDir = Vec2(1.0f,-1.0f).GetNormalized(); //45 degrees
 
 private:
 	std::random_device rd;
 	std::mt19937 rng;
-	std::uniform_int_distribution<int> lenghtRange;
+	std::uniform_int_distribution<int> lengthRange;
 };
+

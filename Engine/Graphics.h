@@ -73,6 +73,9 @@ public:
 	void DrawCircleStrokeOnly(Vec2 pos, float r, float stroke, Color c);
 	void DrawLine(Vec2 A, Vec2 B, Color c);
 	void DrawLine(Line line, Color c);
+	void DrawHorizontalLine(int y, int x1, int x2, Color c);
+	void DrawHorizontalLine(Vec2 pos, float length, Color c);
+	void DrawParallelogram(Vec2 topLeft, Vec2 bottomLeft, float width, Color c);
 	bool insideScreen(int x, int y);
 	bool insideScreen(Vec2 point);
 	float seglen(int x1, int y1, int x2, int y2);

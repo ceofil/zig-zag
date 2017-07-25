@@ -21,12 +21,14 @@
 #include "MainWindow.h"
 #include "Game.h"
 
-Game::Game( MainWindow& wnd )
+Game::Game(MainWindow& wnd)
 	:
-	wnd( wnd ),
-	gfx( wnd ),
-	ball(Graphics::GetCenter(), 100.0f)
+	wnd(wnd),
+	gfx(wnd),
+	ball(Graphics::GetCenter(), 25.0f),
+	path(25.0f)
 {
+
 }
 
 void Game::Go()
@@ -48,9 +50,11 @@ void Game::Go()
 void Game::UpdateModel(float dt)
 {
 	ball.Update(wnd.kbd, dt);
+	path.Update(dt);
 }
 
 void Game::ComposeFrame()
 {
+	path.Draw(gfx);
 	ball.Draw(gfx);
 }

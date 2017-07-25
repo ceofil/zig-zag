@@ -493,6 +493,43 @@ void Graphics::DrawLine(Line line, Color c)
 	DrawLine(line.p1, line.p2, c);
 }
 
+void Graphics::DrawHorizontalLine(int y, int x1, int x2, Color c)
+{
+	assert(x1 < x2 && x1 > 0 && x2 > 0 && x1 < ScreenWidth && x2 < ScreenWidth);
+	for (int x = x1; x <= x2; x++)
+	{
+		PutPixel(x, y, c);
+	}
+}
+
+void Graphics::DrawHorizontalLine(Vec2 pos, float length, Color c)
+{
+	int x = int(pos.x);
+	int y = int(pos.y);
+	DrawHorizontalLine(y, x, x + length, c);
+}
+
+void Graphics::DrawParallelogram(Vec2 topLeft, Vec2 bottomLeft, float width, Color c)
+{
+	float dx = bottomLeft.x - topLeft.x;
+	float dy = bottomLeft.y - topLeft.y;
+	float m = dx / dy;
+	float b = topLeft.x - m * topLeft.y;
+
+	int y1 = int(std::min(topLeft.y, bottomLeft.y));
+	int y2 = int(std::max(topLeft.y, bottomLeft.y));
+
+	for (int y = y1; y <= y2; y++)
+	{
+		int x = int(m * y + b + 0.5f);
+		if (insideScreen(x, y))
+		{
+			DrawHorizontalLine(y, x, x + width, c);
+		}
+
+	}
+}
+
 
 //////////////////////////////////////////////////
 //           Graphics Exception
