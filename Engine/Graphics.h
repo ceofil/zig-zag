@@ -77,6 +77,8 @@ public:
 	bool insideScreen(Vec2 point);
 	float seglen(int x1, int y1, int x2, int y2);
 	void FillScreenWith(Color c);
+	static Vec2 GetCenter();
+	static RectF GetRect();
 
 	~Graphics();
 private:

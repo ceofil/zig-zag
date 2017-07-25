@@ -24,7 +24,8 @@
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
-	gfx( wnd )
+	gfx( wnd ),
+	ball(Graphics::GetCenter(), 100.0f)
 {
 }
 
@@ -46,8 +47,10 @@ void Game::Go()
 
 void Game::UpdateModel(float dt)
 {
+	ball.Update(wnd.kbd, dt);
 }
 
 void Game::ComposeFrame()
 {
+	ball.Draw(gfx);
 }
