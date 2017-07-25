@@ -495,10 +495,14 @@ void Graphics::DrawLine(Line line, Color c)
 
 void Graphics::DrawHorizontalLine(int y, int x1, int x2, Color c)
 {
-	assert(x1 < x2 && x1 > 0 && x2 > 0 && x1 < ScreenWidth && x2 < ScreenWidth);
-	for (int x = x1; x <= x2; x++)
+	if (y >= 0 && y < ScreenHeight)
 	{
-		PutPixel(x, y, c);
+		x1 = std::max(0, x1);
+		x2 = std::min(ScreenWidth - 1, x2);
+		for (int x = x1; x <= x2; x++)
+		{
+			PutPixel(x, y, c);
+		}
 	}
 }
 

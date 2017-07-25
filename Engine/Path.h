@@ -32,7 +32,8 @@ private:
 private:
 	static constexpr float width = 50.0f;
 	float speed;
-	Vec2 cornerDir = Vec2(1.0f,-1.0f).GetNormalized(); //45 degrees
+	Vec2 cornerDir = Vec2(2.0f,-1.0f).GetNormalized(); 
+	float perspective = -cornerDir.y / cornerDir.x;
 
 private:
 	std::random_device rd;

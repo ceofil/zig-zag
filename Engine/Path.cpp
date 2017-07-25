@@ -42,7 +42,7 @@ void Path::Update(float dt)
 	Corner* ptr = first;
 	while (ptr)
 	{
-		ptr->pos.y += dt * speed;
+		ptr->pos.y += dt * speed * perspective;
 		ptr = ptr->next;
 	}
 	if (last->previous->pos.y > Graphics::ScreenHeight )
@@ -73,7 +73,7 @@ void Path::SpawnCorner()
 {
 	Vec2 nextCornerPos = { -1.0f,-1.0f };
 
-	while ( nextCornerPos.x < 0.0f || nextCornerPos.x >= Graphics::ScreenWidth - width )
+	while ( nextCornerPos.x < 0.0f || nextCornerPos.x >= Graphics::ScreenWidth - width + 1 )
 	{
 		float length = float(lengthRange(rng));
 		nextCornerPos = first->pos + cornerDir * length;
