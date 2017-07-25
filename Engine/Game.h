@@ -23,7 +23,7 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
-#include "Sprite.h"
+#include "FrameTimer.h"
 
 class Game
 {
@@ -34,7 +34,7 @@ public:
 	void Go();
 private:
 	void ComposeFrame();
-	void UpdateModel();
+	void UpdateModel(float dt);
 	/********************************/
 	/*  User Functions              */
 	/********************************/
@@ -43,7 +43,6 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
-	Color surface[4001];
-	Sprite sprite;
+	FrameTimer ft;
 	/********************************/
 };

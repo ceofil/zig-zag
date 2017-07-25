@@ -20,30 +20,34 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
-#include "Bitmap.h"
 
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
 	gfx( wnd )
 {
-	LoadSprite( &sprite, surface, "WalkinDude\\wdude00.bmp", 50,80,Color(255,255,255) );
 }
 
 void Game::Go()
 {
-	gfx.BeginFrame();	
-	UpdateModel();
+	gfx.BeginFrame();
+
+	float timeperiod = ft.Mark();
+	while (timeperiod > 0.0f)
+	{
+		const float dt = std::min(0.0025f, timeperiod);
+		UpdateModel(dt);
+		timeperiod -= dt;
+	}
+
 	ComposeFrame();
 	gfx.EndFrame();
 }
 
-void Game::UpdateModel()
+void Game::UpdateModel(float dt)
 {
 }
 
 void Game::ComposeFrame()
 {
-	DrawSprite(&sprite, 400,400,gfx);
-	DrawSurface(100, 100, 50, 80, surface, gfx);
 }
