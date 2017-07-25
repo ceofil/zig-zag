@@ -18,12 +18,38 @@
 *	You should have received a copy of the GNU General Public License					  *
 *	along with The Chili DirectX Framework.  If not, see <http://www.gnu.org/licenses/>.  *
 ******************************************************************************************/
+#include <stdio.h>
+#include <io.h>
+#include <fcntl.h>
+#define _CRTDBG_MAP_ALLOC  
+#include <stdlib.h>  
+#include <crtdbg.h>  
+#include <conio.h>
 #include "MainWindow.h"
 #include "Game.h"
 #include "ChiliException.h"
 
 int WINAPI wWinMain( HINSTANCE hInst,HINSTANCE,LPWSTR pArgs,INT )
 {
+	//////////////////////////////////////////////////////////////
+	//////        Console + _CrtDumpMemoryLeaks stuff       //////
+	AllocConsole();
+	HANDLE handle_out = GetStdHandle(STD_OUTPUT_HANDLE);
+	int hCrt = _open_osfhandle((long)handle_out, _O_TEXT);
+	FILE* hf_out = _fdopen(hCrt, "w");
+	setvbuf(hf_out, NULL, _IONBF, 1);
+	*stdout = *hf_out;
+	_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE);
+	_CrtSetReportFile(_CRT_WARN, _CRTDBG_FILE_STDERR);
+	_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_FILE);
+	_CrtSetReportFile(_CRT_ERROR, _CRTDBG_FILE_STDERR);
+	_CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE);
+	_CrtSetReportFile(_CRT_ASSERT, _CRTDBG_FILE_STDERR);
+	//////////////////////////////////////////////////////////////
+
+
+
+
 	try
 	{
 		MainWindow wnd( hInst,pArgs );		
@@ -74,6 +100,7 @@ int WINAPI wWinMain( HINSTANCE hInst,HINSTANCE,LPWSTR pArgs,INT )
 		MessageBox( nullptr,L"\n\nException caught at main window creation.",
 			L"Unhandled Non-STL Exception",MB_ICONERROR );
 	}
-
+	_CrtDumpMemoryLeaks();  //                                                              <---
+	while (!_kbhit());
 	return 0;
 }
