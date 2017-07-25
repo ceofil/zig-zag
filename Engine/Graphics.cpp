@@ -493,6 +493,20 @@ void Graphics::DrawLine(Line line, Color c)
 	DrawLine(line.p1, line.p2, c);
 }
 
+void Graphics::DrawVerticalLine(int x, int y1, int y2, Color c)
+{
+	if (x >= 0 && x < ScreenWidth)
+	{
+		y1 = std::max(0,y1);
+		y2 = std::min(ScreenHeight-1, y2);
+		for (int y = y1; y <= y2; y++)
+		{
+			PutPixel(x, y, c);
+		}
+	}
+}
+
+
 void Graphics::DrawHorizontalLine(int y, int x1, int x2, Color c)
 {
 	if (y >= 0 && y < ScreenHeight)
@@ -515,22 +529,63 @@ void Graphics::DrawHorizontalLine(Vec2 pos, float length, Color c)
 
 void Graphics::DrawParallelogram(Vec2 topLeft, Vec2 bottomLeft, float width, Color c)
 {
-	float dx = bottomLeft.x - topLeft.x;
-	float dy = bottomLeft.y - topLeft.y;
-	float m = dx / dy;
-	float b = topLeft.x - m * topLeft.y;
 
-	int y1 = int(std::min(topLeft.y, bottomLeft.y));
-	int y2 = int(std::max(topLeft.y, bottomLeft.y));
+	Vec2 A = topLeft; //copied the code from DrawLine, changed PutPixel to DrawHorziontalLine/DrawVerticalLine
+	Vec2 B = bottomLeft;
 
-	for (int y = y1; y <= y2; y++)
+	float dx = B.x - A.x;
+	float dy = B.y - A.y;
+
+	if (std::abs(dy) > std::abs(dx))
 	{
-		int x = int(m * y + b + 0.5f);
-		if (insideScreen(x, y))
-		{
-			DrawHorizontalLine(y, x, x + width, c);
-		}
+		float m = dx / dy;
+		float b = A.x - m * A.y;
 
+		int y1 = int(std::min(A.y, B.y));
+		int y2 = int(std::max(A.y, B.y));
+
+		for (int y = y1; y <= y2; y++)
+		{
+			int x = int(m * y + b + 0.5f);
+			if (insideScreen(x, y))
+			{
+				DrawHorizontalLine(y, x, x + width, c);
+				if (dx > 0)
+				{
+					DrawVerticalLine(x, y, y + 100,Colors::LightGray);
+				}
+				else
+				{
+					DrawVerticalLine(x + width, y, y + 100, Colors::LightGray);
+				}
+			}
+
+		}
+	}
+	else
+	{
+		float m = dy / dx;
+		float b = A.y - m * A.x;
+
+		int x1 = int(std::min(A.x, B.x));
+		int x2 = int(std::max(A.x, B.x));
+
+		for (int x = x1; x <= x2; x++)
+		{
+			int y = int(m * x + b + 0.5f);
+			if (insideScreen(x, y))
+			{
+				DrawHorizontalLine(y, x, x + width, c);
+				if (dx > 0)
+				{
+					DrawVerticalLine(x, y, y + 100, Colors::LightGray);
+				}
+				else
+				{
+					DrawVerticalLine(x + width, y, y + 100, Colors::LightGray);
+				}
+			}
+		}
 	}
 }
 
