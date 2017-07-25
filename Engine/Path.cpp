@@ -6,9 +6,13 @@ Path::Path(float speed)
 	last(first),
 	speed(speed),
 	rng(rd()),
-	lengthRange(30,100)
+	lengthRange(20,200)
 {
-	SpawnCorner(); SpawnCorner(); SpawnCorner(); SpawnCorner(); SpawnCorner();
+	SpawnCorner();
+	SpawnCorner();
+	SpawnCorner();
+	SpawnCorner();
+	SpawnCorner();
 }
 
 Path::~Path()
@@ -30,6 +34,7 @@ void Path::Draw(Graphics & gfx)
 		gfx.DrawParallelogram(ptr->pos, ptr->next->pos, width, Colors::Gray);
 		ptr = ptr->next;
 	}
+	gfx.DrawCircle(last->pos, 10.0f, Colors::Red);
 }
 
 void Path::Update(float dt)
@@ -39,6 +44,14 @@ void Path::Update(float dt)
 	{
 		ptr->pos.y += dt * speed;
 		ptr = ptr->next;
+	}
+	if (last->previous->pos.y > Graphics::ScreenHeight )
+	{
+		DeleteLastCorner();
+	}
+	if (first->next->pos.y > 0.0f)
+	{
+		SpawnCorner();
 	}
 }
 
