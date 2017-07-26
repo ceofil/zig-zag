@@ -9,7 +9,8 @@ Ball::Ball(Vec2 pos, float speed)
 
 void Ball::Draw(Graphics & gfx) const
 {
-	gfx.DrawCircle(pos, radius, Colors::Yellow);
+	SpriteCodex::DrawBall(pos, gfx);
+	//gfx.DrawCircle(pos, radius, Colors::Yellow);
 }
 
 void Ball::Update(Keyboard & kbd, float dt)

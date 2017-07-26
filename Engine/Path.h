@@ -10,6 +10,7 @@ public:
 	Path( float speed );
 	~Path();
 	void Draw( Graphics& gfx );
+	void DrawBlock(Vec2 A, Vec2 B, float width, Color c, Graphics& gfx );
 	void Update( float dt, int& score );
 
 private:
@@ -34,6 +35,10 @@ private:
 	float speed;
 	Vec2 cornerDir = Vec2(2.0f,-1.0f).GetNormalized(); 
 	float perspective = -cornerDir.y / cornerDir.x;
+
+private:
+	Color pathColor = Color(255,165,0);
+	Color wallsColor = Color(175, 85, 0);
 
 private:
 	std::random_device rd;

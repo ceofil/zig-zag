@@ -1,4 +1,5 @@
 #include "Path.h"
+#include <algorithm>
 
 Path::Path(float speed)
 	:
@@ -27,8 +28,69 @@ void Path::Draw(Graphics & gfx)
 	Corner* ptr = first;
 	while(ptr->next)
 	{
-		gfx.DrawParallelogram(ptr->pos, ptr->next->pos, width, Colors::Gray);
+		DrawBlock(ptr->pos, ptr->next->pos, width, pathColor, gfx);
 		ptr = ptr->next;
+	}
+}
+
+void Path::DrawBlock(Vec2 topLeft, Vec2 bottomLeft, float width, Color c, Graphics & gfx)
+{
+	Vec2 A = topLeft;
+	Vec2 B = bottomLeft;
+
+	float dx = B.x - A.x;
+	float dy = B.y - A.y;
+
+	if (std::abs(dy) > std::abs(dx))
+	{
+		float m = dx / dy;
+		float b = A.x - m * A.y;
+
+		int y1 = int(std::min(A.y, B.y));
+		int y2 = int(std::max(A.y, B.y));
+
+		for (int y = y1; y <= y2; y++)
+		{
+			int x = int(m * y + b + 0.5f);
+			if (gfx.insideScreen(x, y))
+			{
+				gfx.DrawHorizontalLine(y, x, x + width, c);
+				if (dx > 0)
+				{
+					gfx.DrawFadedVerticalLine(x, y, y + 100, wallsColor);
+				}
+				else
+				{
+					gfx.DrawFadedVerticalLine(x + width, y, y + 100, wallsColor);
+				}
+			}
+
+		}
+	}
+	else
+	{
+		float m = dy / dx;
+		float b = A.y - m * A.x;
+
+		int x1 = int(std::min(A.x, B.x));
+		int x2 = int(std::max(A.x, B.x));
+
+		for (int x = x1; x <= x2; x++)
+		{
+			int y = int(m * x + b + 0.5f);
+			if (gfx.insideScreen(x, y))
+			{
+				gfx.DrawHorizontalLine(y, x, x + width, c);
+				if (dx > 0)
+				{
+					gfx.DrawFadedVerticalLine(x, y, y + 100, wallsColor);
+				}
+				else
+				{
+					gfx.DrawFadedVerticalLine(x + width, y, y + 100, wallsColor);
+				}
+			}
+		}
 	}
 }
 

@@ -506,6 +506,26 @@ void Graphics::DrawVerticalLine(int x, int y1, int y2, Color c)
 	}
 }
 
+void Graphics::DrawFadedVerticalLine(int x, int y1, int y2, Color c)
+{
+	int r = c.GetR();
+	int g = c.GetG();
+	int b = c.GetB();
+	if (x >= 0 && x < ScreenWidth)
+	{
+		y1 = std::max(0, y1);
+		y2 = std::min(ScreenHeight - 1, y2);
+
+		int dy = y2 - y1;
+		for (int y = y1; y < y2; y++)
+		{
+			int currDy = y2 - y;  // or ( y - y1 ) for reverse gradient
+			Color clr = Color( r * currDy / dy, g * currDy / dy, b * currDy / dy);
+			PutPixel(x, y, clr);
+		}
+	}
+}
+
 
 void Graphics::DrawHorizontalLine(int y, int x1, int x2, Color c)
 {
@@ -530,7 +550,7 @@ void Graphics::DrawHorizontalLine(Vec2 pos, float length, Color c)
 void Graphics::DrawParallelogram(Vec2 topLeft, Vec2 bottomLeft, float width, Color c)
 {
 
-	Vec2 A = topLeft; //copied the code from DrawLine, changed PutPixel to DrawHorziontalLine/DrawVerticalLine
+	Vec2 A = topLeft; //copied the code from DrawLine, changed PutPixel to DrawHorziontalLine
 	Vec2 B = bottomLeft;
 
 	float dx = B.x - A.x;
@@ -550,14 +570,6 @@ void Graphics::DrawParallelogram(Vec2 topLeft, Vec2 bottomLeft, float width, Col
 			if (insideScreen(x, y))
 			{
 				DrawHorizontalLine(y, x, x + width, c);
-				if (dx > 0)
-				{
-					DrawVerticalLine(x, y, y + 100,Colors::LightGray);
-				}
-				else
-				{
-					DrawVerticalLine(x + width, y, y + 100, Colors::LightGray);
-				}
 			}
 
 		}
@@ -576,14 +588,6 @@ void Graphics::DrawParallelogram(Vec2 topLeft, Vec2 bottomLeft, float width, Col
 			if (insideScreen(x, y))
 			{
 				DrawHorizontalLine(y, x, x + width, c);
-				if (dx > 0)
-				{
-					DrawVerticalLine(x, y, y + 100, Colors::LightGray);
-				}
-				else
-				{
-					DrawVerticalLine(x + width, y, y + 100, Colors::LightGray);
-				}
 			}
 		}
 	}
