@@ -37,8 +37,9 @@ private:
 	float perspective = -cornerDir.y / cornerDir.x;
 
 private:
-	Color pathColor = Color(255,165,0);
-	Color wallsColor = Color(175, 85, 0);
+	Color pathColor = Color(0,165,255);
+	Color wallsColorRight = Color(0,85,165);
+	Color wallsColorLeft = Color(0, 105, 195);
 
 private:
 	std::random_device rd;

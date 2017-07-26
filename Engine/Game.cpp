@@ -25,8 +25,8 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	ball(Graphics::GetCenter(), 70.0f),
-	path(70.0f),
+	ball(Graphics::GetCenter(), 110.0f),
+	path(110.0f),
 	txt(gfx,0,0,2,2,1000,1000)
 {
 

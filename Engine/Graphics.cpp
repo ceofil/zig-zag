@@ -508,19 +508,21 @@ void Graphics::DrawVerticalLine(int x, int y1, int y2, Color c)
 
 void Graphics::DrawFadedVerticalLine(int x, int y1, int y2, Color c)
 {
-	int r = c.GetR();
-	int g = c.GetG();
-	int b = c.GetB();
+	float r = float(c.GetR());
+	float g = float(c.GetG());
+	float b = float(c.GetB());
 	if (x >= 0 && x < ScreenWidth)
 	{
 		y1 = std::max(0, y1);
 		y2 = std::min(ScreenHeight - 1, y2);
 
-		int dy = y2 - y1;
+		float dy = float(y2 - y1);
+		float ratioPerPixel = 1.0f / dy;
 		for (int y = y1; y < y2; y++)
 		{
-			int currDy = y2 - y;  // or ( y - y1 ) for reverse gradient
-			Color clr = Color( r * currDy / dy, g * currDy / dy, b * currDy / dy);
+			float currDy = float(y2 - y);  // or ( y - y1 ) for reverse gradient
+			float ratio = currDy * ratioPerPixel;
+			Color clr = Color( int(r * ratio), int(g * ratio), int(b * ratio) );
 			PutPixel(x, y, clr);
 		}
 	}
