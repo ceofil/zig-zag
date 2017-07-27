@@ -12,6 +12,17 @@ Path::Path(int&score,int&highScore,float speed)
 	lengthRange(20,200)
 {
 	SpawnCorner();
+	SpawnCorner();
+	SpawnCorner();
+	SpawnCorner();
+	SpawnCorner();
+	SpawnCorner();
+	SpawnCorner();
+	SpawnCorner();
+	SpawnCorner();
+	SpawnCorner();
+	SpawnCorner();
+	SetCurrBlock();
 }
 
 Path::~Path()
@@ -33,6 +44,9 @@ void Path::Draw(Graphics & gfx)
 		DrawBlock(ptr->pos, ptr->next->pos, width, pathColor, gfx);
 		ptr = ptr->next;
 	}
+
+	//test 
+	gfx.DrawParallelogram(currBlock->pos, currBlock->next->pos, width, Color(15,180,255));
 }
 
 void Path::DrawBlock(Vec2 topLeft, Vec2 bottomLeft, float width, Color c, Graphics & gfx)
@@ -102,18 +116,19 @@ void Path::Update(float dt)
 	while (ptr)
 	{
 		float delta = dt * speed * perspective;
-		if (ptr->pos.y < Graphics::ScreenHeight / 2 && ptr->pos.y + delta > Graphics::ScreenHeight / 2)
-		{
-			score++;
-			if (score > highScore)
-			{
-				highScore = score;
-			}
-		}
-
 		ptr->pos.y += delta;
 		ptr = ptr->next;
 	}
+	if (currBlock->pos.y > yCenter)
+	{
+		score++;
+		if (score > highScore)
+		{
+			highScore = score;
+		}
+		currBlock = currBlock->previous;
+	}
+
 	if (last->previous->pos.y > Graphics::ScreenHeight )
 	{
 		DeleteLastCorner();
@@ -142,13 +157,28 @@ void Path::SpawnCorner()
 {
 	Vec2 nextCornerPos = { -1.0f,-1.0f };
 
-	while ( nextCornerPos.x < 0.0f || nextCornerPos.x >= Graphics::ScreenWidth - width + 1 )
+	while ( nextCornerPos.x < 0.0f || nextCornerPos.x >= Graphics::ScreenWidth - width - 1 )
 	{
 		float length = float(lengthRange(rng));
 		nextCornerPos = first->pos + cornerDir * length;
 	}
 	cornerDir.x *= -1.0f;
 	AddCorner(nextCornerPos);
+}
+
+void Path::SetCurrBlock()
+{
+	Corner* ptr = first;
+	while (ptr)
+	{
+		if (ptr->pos.y > yCenter )
+		{
+			currBlock = ptr->previous;
+			break;
+		}
+
+		ptr = ptr->next;
+	}
 }
 
 Path::Corner::Corner(Corner * previous, Corner * next, Vec2 pos)

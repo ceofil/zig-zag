@@ -30,9 +30,11 @@ private:
 private:
 	Corner* first = nullptr;
 	Corner* last = nullptr;
+	Corner* currBlock = nullptr;
 	void AddCorner(Vec2 pos);
 	void DeleteLastCorner();
 	void SpawnCorner();
+	void SetCurrBlock();
 
 private:
 	static constexpr float width = 50.0f;
@@ -44,6 +46,7 @@ private:
 	Color pathColor = Color(0,165,255);
 	Color wallsColorRight = Color(0,85,165);
 	Color wallsColorLeft = Color(0, 105, 195);
+	static constexpr int yCenter = Graphics::ScreenHeight / 2;
 
 private:
 	std::random_device rd;
