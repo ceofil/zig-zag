@@ -71,7 +71,7 @@ void Game::ComposeFrame()
 	ball.Draw(gfx);
 	txt.drawint(score, 75, 290, Colors::Red);
 	txt.drawint(highScore, 150, 290, Colors::LightGray);
-	
+	gfx.DrawHorizontalLine(300, 0, 399, Colors::Red);
 
 }
 

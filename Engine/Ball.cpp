@@ -5,12 +5,12 @@ Ball::Ball(Vec2 pos, float speed)
 	pos(pos),
 	speed(speed)
 {
+	this->pos.y -= radius;
 }
 
 void Ball::Draw(Graphics & gfx) const
 {
 	SpriteCodex::DrawBall(pos, gfx);
-	//gfx.DrawCircle(pos, radius, Colors::Yellow);
 }
 
 void Ball::Update(Keyboard & kbd, float dt)
@@ -18,16 +18,13 @@ void Ball::Update(Keyboard & kbd, float dt)
 	pos += dir * speed * dt;
 	
 
-	// change dirrection on SPACE press
+	// change dirrection 
 	if (!kbd.KeyIsEmpty())
 	{
 		const auto e = kbd.ReadKey();
-		if (e.IsRelease())
+		if (e.IsPress())
 		{
-			if (e.GetCode() == VK_SPACE)
-			{
-				dir = dir * -1.0f;  
-			}
+			dir = dir * -1.0f;  
 		}
 	}
 }
