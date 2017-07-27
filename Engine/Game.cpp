@@ -20,6 +20,7 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
+#include <fstream>
 
 Game::Game(MainWindow& wnd)
 	:
@@ -29,7 +30,12 @@ Game::Game(MainWindow& wnd)
 	path(score, highScore, 110.0f),
 	txt(gfx,0,0,2,2,1000,1000)
 {
+	LoadHighScore();
+}
 
+Game::~Game()
+{
+	SaveHighScore();
 }
 
 void Game::Go()
@@ -52,6 +58,18 @@ void Game::UpdateModel(float dt)
 {
 	ball.Update(wnd.kbd, dt);
 	path.Update(dt);
+}
+
+void Game::LoadHighScore()
+{
+	std::ifstream in("hs.txt");
+	in >> highScore;
+}
+
+void Game::SaveHighScore()
+{
+	std::ofstream out("hs.txt");
+	out << highScore;
 }
 
 void Game::ComposeFrame()

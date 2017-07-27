@@ -34,12 +34,15 @@ public:
 	Game( class MainWindow& wnd );
 	Game( const Game& ) = delete;
 	Game& operator=( const Game& ) = delete;
+	~Game();
 	void Go();
 private:
 	void ComposeFrame();
 	void UpdateModel(float dt);
 	/********************************/
 	/*  User Functions              */
+	void LoadHighScore();
+	void SaveHighScore();
 	/********************************/
 private:
 	MainWindow& wnd;
@@ -51,6 +54,6 @@ private:
 	Path path;
 	Text txt;
 	int score = 0;
-	int highScore = 50;
+	int highScore = 0;
 	/********************************/
 };
