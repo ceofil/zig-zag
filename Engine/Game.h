@@ -51,5 +51,6 @@ private:
 	Path path;
 	Text txt;
 	int score = 0;
+	int highScore = 50;
 	/********************************/
 };

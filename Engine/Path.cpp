@@ -1,8 +1,10 @@
 #include "Path.h"
 #include <algorithm>
 
-Path::Path(float speed)
+Path::Path(int&score,int&highScore,float speed)
 	:
+	score(score),
+	highScore(highScore),
 	first(new Corner(nullptr, nullptr, Vec2(float(Graphics::ScreenWidth / 2),float(Graphics::ScreenHeight)))),
 	last(first),
 	speed(speed),
@@ -94,7 +96,7 @@ void Path::DrawBlock(Vec2 topLeft, Vec2 bottomLeft, float width, Color c, Graphi
 	}
 }
 
-void Path::Update(float dt, int& score)
+void Path::Update(float dt)
 {
 	Corner* ptr = first;
 	while (ptr)
@@ -103,6 +105,10 @@ void Path::Update(float dt, int& score)
 		if (ptr->pos.y < Graphics::ScreenHeight / 2 && ptr->pos.y + delta > Graphics::ScreenHeight / 2)
 		{
 			score++;
+			if (score > highScore)
+			{
+				highScore = score;
+			}
 		}
 
 		ptr->pos.y += delta;

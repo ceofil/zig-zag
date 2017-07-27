@@ -26,7 +26,7 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	ball(Graphics::GetCenter(), 110.0f),
-	path(110.0f),
+	path(score, highScore, 110.0f),
 	txt(gfx,0,0,2,2,1000,1000)
 {
 
@@ -51,12 +51,14 @@ void Game::Go()
 void Game::UpdateModel(float dt)
 {
 	ball.Update(wnd.kbd, dt);
-	path.Update(dt, score);
+	path.Update(dt);
 }
 
 void Game::ComposeFrame()
 {
 	path.Draw(gfx);
 	ball.Draw(gfx);
-	txt.drawint(score, 100, 290, Colors::Red);
+	txt.drawint(score, 75, 290, Colors::Red);
+	txt.drawint(highScore, 150, 290, Colors::LightGray);
+
 }

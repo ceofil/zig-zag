@@ -7,11 +7,15 @@ class Path
 {
 public:
 	Path() = default;
-	Path( float speed );
+	Path( int& score, int& highScore, float speed );
 	~Path();
 	void Draw( Graphics& gfx );
 	void DrawBlock(Vec2 A, Vec2 B, float width, Color c, Graphics& gfx );
-	void Update( float dt, int& score );
+	void Update( float dt);
+
+private:
+	int& score;
+	int& highScore;
 
 private:
 	struct Corner
