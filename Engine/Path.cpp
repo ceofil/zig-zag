@@ -176,9 +176,25 @@ void Path::SetCurrBlock()
 			currBlock = ptr->previous;
 			break;
 		}
-
 		ptr = ptr->next;
 	}
+}
+
+bool Path::ContainsBall(float xBall)
+{
+	Vec2 A = currBlock->pos;
+	Vec2 B = currBlock->next->pos;
+	
+	float dx = B.x - A.x;
+	float dy = B.y - A.y;
+
+	float m = dx / dy;
+	float b = A.x - m * A.y;
+
+	float x = m * yCenter + b + 0.5f;
+
+
+	return xBall > x && xBall < x + width;
 }
 
 Path::Corner::Corner(Corner * previous, Corner * next, Vec2 pos)

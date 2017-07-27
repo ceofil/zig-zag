@@ -31,3 +31,8 @@ void Ball::Update(Keyboard & kbd, float dt)
 		}
 	}
 }
+
+float Ball::GetX() const
+{
+	return pos.x;
+}

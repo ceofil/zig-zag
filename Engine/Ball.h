@@ -10,6 +10,7 @@ public:
 	Ball(Vec2 pos, float speed);
 	void Draw( Graphics& gfx ) const;
 	void Update( Keyboard& kbd, float dt );
+	float GetX() const;
 private:
 	Vec2 pos;
 	Vec2 dir = { 1.0f,0.0f };

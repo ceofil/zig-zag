@@ -60,6 +60,21 @@ void Game::UpdateModel(float dt)
 	path.Update(dt);
 }
 
+
+void Game::ComposeFrame()
+{
+	path.Draw(gfx);
+	if (path.ContainsBall(ball.GetX()) == false)
+	{
+		score = 0;
+	}
+	ball.Draw(gfx);
+	txt.drawint(score, 75, 290, Colors::Red);
+	txt.drawint(highScore, 150, 290, Colors::LightGray);
+	
+
+}
+
 void Game::LoadHighScore()
 {
 	std::ifstream in("hs.txt");
@@ -70,13 +85,4 @@ void Game::SaveHighScore()
 {
 	std::ofstream out("hs.txt");
 	out << highScore;
-}
-
-void Game::ComposeFrame()
-{
-	path.Draw(gfx);
-	ball.Draw(gfx);
-	txt.drawint(score, 75, 290, Colors::Red);
-	txt.drawint(highScore, 150, 290, Colors::LightGray);
-
 }

@@ -12,6 +12,7 @@ public:
 	void Draw( Graphics& gfx );
 	void DrawBlock(Vec2 A, Vec2 B, float width, Color c, Graphics& gfx );
 	void Update( float dt);
+	bool ContainsBall(float xBall);
 
 private:
 	int& score;
