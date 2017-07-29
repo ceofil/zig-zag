@@ -11,13 +11,25 @@ Path::Path(int&score,int&highScore,float speed, Vec2 cornerDir)
 	cornerDir(cornerDir.GetNormalized()),
 	perspective(-cornerDir.y / cornerDir.x),
 	rng(rd()),
-	lengthRange(20,200)
+	lengthRange(70,200)
 {
-	startingBlockTopLeft = Graphics::GetCenter() - Vec2( startingBlockWidth / 2.0f, 0.0f);
-	startingBlockBottomLeft = startingBlockTopLeft - this->cornerDir * startingBlockLength;
+	cornerDir.Normalize();
+	first->pos -= cornerDir * width;
+
+	cornerDir.x *= -1.0f;
+	Vec2 startingBlockDelta = cornerDir * startingBlockWidth * -1.0f + Vec2(0.5f, 0.5f);
+	startingBlockTopLeft = Graphics::GetCenter() + cornerDir * (startingBlockWidth / 2.0f);
+	startingBlockTopRight = startingBlockTopLeft + startingBlockDelta;
+
+	cornerDir.x *= -1.0f;
+	startingBlockBottomLeft = startingBlockTopLeft - cornerDir * startingBlockLength;
+	startingBlockBottomRight = startingBlockBottomLeft + startingBlockDelta;
+
 
 	SpawnCorner();
+	cornerDir.x *= -1.0f;
 	SpawnCorner();
+	cornerDir.x *= -1.0f;
 	SpawnCorner();
 	SpawnCorner();
 	SpawnCorner();
@@ -52,15 +64,7 @@ void Path::Draw(Graphics & gfx)
 	}
 	if (startingBlockTopLeft.y < float(Graphics::ScreenHeight))
 	{
-		DrawBlock(startingBlockTopLeft, startingBlockBottomLeft, startingBlockWidth, pathColor, gfx);
-		int y = int(startingBlockBottomLeft.y + 0.5f);
-		int x1 = int(startingBlockBottomLeft.x);
-		int x2 = x1 + int(startingBlockWidth);
-		for (int x = x1; x <= x2; x++)
-		{
-			gfx.DrawFadedVerticalLine(x, y, y + 100, wallsColorLeft);
-		}
-		 
+		DrawStartingBlock(gfx);
 	}
 
 	//highlight for the currBlock
@@ -88,14 +92,14 @@ void Path::DrawBlock(Vec2 topLeft, Vec2 bottomLeft, float width, Color c, Graphi
 			int x = int(m * y + b + 0.5f);
 			if (gfx.insideScreen(x, y))
 			{
-				gfx.DrawHorizontalLine(y, x, x + width, c);
+				gfx.DrawHorizontalLine(y, x, x + int(width), c);
 				if (dx > 0)
 				{
 					gfx.DrawFadedVerticalLine(x, y, y + 100, wallsColorLeft);
 				}
 				else
 				{
-					gfx.DrawFadedVerticalLine(x + width, y, y + 100, wallsColorRight);
+					gfx.DrawFadedVerticalLine(x + int(width), y, y + 100, wallsColorRight);
 				}
 			}
 
@@ -114,14 +118,14 @@ void Path::DrawBlock(Vec2 topLeft, Vec2 bottomLeft, float width, Color c, Graphi
 			int y = int(m * x + b + 0.5f);
 			if (gfx.insideScreen(x, y))
 			{
-				gfx.DrawHorizontalLine(y, x, x + width, c);
+				gfx.DrawHorizontalLine(y, x, x + int(width), c);
 				if (dx > 0)
 				{
 					gfx.DrawFadedVerticalLine(x, y, y + 100, wallsColorLeft);
 				}
 				else
 				{
-					gfx.DrawFadedVerticalLine(x + width, y, y + 100, wallsColorRight);
+					gfx.DrawFadedVerticalLine(x + int(width), y, y + 100, wallsColorRight);
 				}
 			}
 		}
@@ -137,6 +141,8 @@ void Path::Update(float dt)
 	{
 		startingBlockTopLeft.y += delta;
 		startingBlockBottomLeft.y += delta;
+		startingBlockBottomRight.y += delta;
+		startingBlockTopRight.y += delta;
 	}
 
 	Corner* ptr = first;
@@ -204,6 +210,19 @@ void Path::SetCurrBlock()
 		}
 		ptr = ptr->next;
 	}
+}
+
+void Path::DrawStartingBlock(Graphics & gfx)
+{
+	//path
+	gfx.DrawTriangle(startingBlockTopLeft, startingBlockTopRight, startingBlockBottomLeft, pathColor);
+	gfx.DrawTriangle(startingBlockTopLeft, startingBlockTopRight, startingBlockBottomRight, pathColor);
+	gfx.DrawTriangle(startingBlockBottomLeft, startingBlockBottomRight, startingBlockTopLeft, pathColor);
+	gfx.DrawTriangle(startingBlockBottomLeft, startingBlockBottomRight, startingBlockTopRight, pathColor);
+
+	//shadow
+	DrawBlock(startingBlockBottomLeft, startingBlockBottomRight, 0, wallsColorLeft, gfx);
+	DrawBlock(startingBlockTopRight, startingBlockBottomRight, 0, wallsColorRight, gfx);
 }
 
 bool Path::ContainsBall(float xBall)

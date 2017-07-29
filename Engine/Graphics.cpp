@@ -546,7 +546,7 @@ void Graphics::DrawHorizontalLine(Vec2 pos, float length, Color c)
 {
 	int x = int(pos.x);
 	int y = int(pos.y);
-	DrawHorizontalLine(y, x, x + length, c);
+	DrawHorizontalLine(y, x, x + int(length), c);
 }
 
 void Graphics::DrawParallelogram(Vec2 topLeft, Vec2 bottomLeft, float width, Color c)
@@ -571,7 +571,7 @@ void Graphics::DrawParallelogram(Vec2 topLeft, Vec2 bottomLeft, float width, Col
 			int x = int(m * y + b + 0.5f);
 			if (insideScreen(x, y))
 			{
-				DrawHorizontalLine(y, x, x + width, c);
+				DrawHorizontalLine(y, x, x + int(width), c);
 			}
 
 		}
@@ -589,8 +589,45 @@ void Graphics::DrawParallelogram(Vec2 topLeft, Vec2 bottomLeft, float width, Col
 			int y = int(m * x + b + 0.5f);
 			if (insideScreen(x, y))
 			{
-				DrawHorizontalLine(y, x, x + width, c);
+				DrawHorizontalLine(y, x, x + int(width), c);
 			}
+		}
+	}
+}
+
+void Graphics::DrawTriangle(Vec2 A, Vec2 B, Vec2 C, Color clr)
+{
+	float dx = B.x - A.x;
+	float dy = B.y - A.y;
+
+	if (std::abs(dy) > std::abs(dx))
+	{
+		float m = dx / dy;
+		float b = A.x - m * A.y;
+
+		int y1 = int(std::min(A.y, B.y));
+		int y2 = int(std::max(A.y, B.y));
+
+		for (int y = y1; y <= y2; y++)
+		{
+			int x = int(m * y + b + 0.5f);
+			Vec2 point = Vec2(float(x), float(y));
+			DrawLine(point, C, clr);
+		}
+	}
+	else
+	{
+		float m = dy / dx;
+		float b = A.y - m * A.x;
+
+		int x1 = int(std::min(A.x, B.x));
+		int x2 = int(std::max(A.x, B.x));
+
+		for (int x = x1; x <= x2; x++)
+		{
+			int y = int(m * x + b + 0.5f);
+			Vec2 point = Vec2(float(x), float(y));
+			DrawLine(point, C, clr);
 		}
 	}
 }

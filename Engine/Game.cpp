@@ -56,8 +56,8 @@ void Game::Go()
 
 void Game::UpdateModel(float dt)
 {
-	//ball.Update(wnd.kbd, dt);
-	//path.Update(dt); 
+	ball.Update(wnd.kbd, dt);
+	path.Update(dt); 
 	if (path.ContainsBall(ball.GetX()) == false)
 	{
 		score = 0;

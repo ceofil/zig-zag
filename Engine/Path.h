@@ -45,12 +45,6 @@ private:
 	float perspective;
 
 private:
-	static constexpr float startingBlockWidth = 200.0f;
-	static constexpr float startingBlockLength = 100.0f;
-	Vec2 startingBlockTopLeft;
-	Vec2 startingBlockBottomLeft;
-
-private:
 	Color pathColor = Color(0,165,255);
 	Color wallsColorRight = Color(0,85,165);
 	Color wallsColorLeft = Color(0, 105, 195);
@@ -60,5 +54,14 @@ private:
 	std::random_device rd;
 	std::mt19937 rng;
 	std::uniform_int_distribution<int> lengthRange;
+
+private:
+	static constexpr float startingBlockWidth = 200.0f;
+	static constexpr float startingBlockLength = 100.0f;
+	Vec2 startingBlockTopLeft;
+	Vec2 startingBlockTopRight;
+	Vec2 startingBlockBottomLeft;
+	Vec2 startingBlockBottomRight;
+	void DrawStartingBlock(Graphics& gfx);
 };
 
