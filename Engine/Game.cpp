@@ -27,7 +27,7 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	ball(Graphics::GetCenter(), 110.0f),
-	path(score, highScore, 110.0f),
+	path(score, highScore, 110.0f, Vec2(2.0f,-1.0f)),
 	txt(gfx,0,0,2,2,1000,1000)
 {
 	LoadHighScore();
@@ -56,22 +56,25 @@ void Game::Go()
 
 void Game::UpdateModel(float dt)
 {
-	ball.Update(wnd.kbd, dt);
-	path.Update(dt);
+	//ball.Update(wnd.kbd, dt);
+	//path.Update(dt); 
+	if (path.ContainsBall(ball.GetX()) == false)
+	{
+		score = 0;
+	}
 }
 
 
 void Game::ComposeFrame()
 {
 	path.Draw(gfx);
-	if (path.ContainsBall(ball.GetX()) == false)
-	{
-		score = 0;
-	}
 	ball.Draw(gfx);
 	txt.drawint(score, 75, 290, Colors::Red);
 	txt.drawint(highScore, 150, 290, Colors::LightGray);
-	gfx.DrawHorizontalLine(300, 0, 399, Colors::Red);
+
+	//grid
+	//gfx.DrawHorizontalLine(300, 0, 399, Colors::Red);
+	//gfx.DrawVerticalLine(200, 0, 599, Colors::Red);
 
 }
 

@@ -1,16 +1,21 @@
 #include "Path.h"
 #include <algorithm>
 
-Path::Path(int&score,int&highScore,float speed)
+Path::Path(int&score,int&highScore,float speed, Vec2 cornerDir)
 	:
 	score(score),
 	highScore(highScore),
-	first(new Corner(nullptr, nullptr, Vec2(float(Graphics::ScreenWidth / 2),float(Graphics::ScreenHeight)))),
+	first(new Corner(nullptr, nullptr, Graphics::GetCenter() - Vec2( width / 2.0f, -1.0f))),
 	last(first),
 	speed(speed),
+	cornerDir(cornerDir.GetNormalized()),
+	perspective(-cornerDir.y / cornerDir.x),
 	rng(rd()),
 	lengthRange(20,200)
 {
+	startingBlockTopLeft = Graphics::GetCenter() - Vec2( startingBlockWidth / 2.0f, 0.0f);
+	startingBlockBottomLeft = startingBlockTopLeft - this->cornerDir * startingBlockLength;
+
 	SpawnCorner();
 	SpawnCorner();
 	SpawnCorner();
@@ -39,14 +44,27 @@ Path::~Path()
 void Path::Draw(Graphics & gfx)
 {
 	Corner* ptr = first;
+	
 	while(ptr->next)
 	{
 		DrawBlock(ptr->pos, ptr->next->pos, width, pathColor, gfx);
 		ptr = ptr->next;
 	}
+	if (startingBlockTopLeft.y < float(Graphics::ScreenHeight))
+	{
+		DrawBlock(startingBlockTopLeft, startingBlockBottomLeft, startingBlockWidth, pathColor, gfx);
+		int y = int(startingBlockBottomLeft.y + 0.5f);
+		int x1 = int(startingBlockBottomLeft.x);
+		int x2 = x1 + int(startingBlockWidth);
+		for (int x = x1; x <= x2; x++)
+		{
+			gfx.DrawFadedVerticalLine(x, y, y + 100, wallsColorLeft);
+		}
+		 
+	}
 
-	//test 
-	gfx.DrawParallelogram(currBlock->pos, currBlock->next->pos, width, Color(15,180,255));
+	//highlight for the currBlock
+	//gfx.DrawParallelogram(currBlock->pos, currBlock->next->pos, width, Color(15,180,255));
 }
 
 void Path::DrawBlock(Vec2 topLeft, Vec2 bottomLeft, float width, Color c, Graphics & gfx)
@@ -112,10 +130,18 @@ void Path::DrawBlock(Vec2 topLeft, Vec2 bottomLeft, float width, Color c, Graphi
 
 void Path::Update(float dt)
 {
+	float delta = dt * speed * perspective;
+
+
+	if (startingBlockTopLeft.y < float(Graphics::ScreenHeight))
+	{
+		startingBlockTopLeft.y += delta;
+		startingBlockBottomLeft.y += delta;
+	}
+
 	Corner* ptr = first;
 	while (ptr)
 	{
-		float delta = dt * speed * perspective;
 		ptr->pos.y += delta;
 		ptr = ptr->next;
 	}
@@ -129,7 +155,7 @@ void Path::Update(float dt)
 		currBlock = currBlock->previous;
 	}
 
-	if (last->previous->pos.y > Graphics::ScreenHeight )
+	if (last->previous->pos.y > float(Graphics::ScreenHeight) )
 	{
 		DeleteLastCorner();
 	}

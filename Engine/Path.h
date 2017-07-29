@@ -7,7 +7,7 @@ class Path
 {
 public:
 	Path() = default;
-	Path( int& score, int& highScore, float speed );
+	Path( int& score, int& highScore, float speed, Vec2 cornerDir );
 	~Path();
 	void Draw( Graphics& gfx );
 	void DrawBlock(Vec2 A, Vec2 B, float width, Color c, Graphics& gfx );
@@ -36,12 +36,19 @@ private:
 	void DeleteLastCorner();
 	void SpawnCorner();
 	void SetCurrBlock();
+	
 
 private:
 	static constexpr float width = 50.0f;
 	float speed;
-	Vec2 cornerDir = Vec2(2.0f,-1.0f).GetNormalized(); 
-	float perspective = -cornerDir.y / cornerDir.x;
+	Vec2 cornerDir;
+	float perspective;
+
+private:
+	static constexpr float startingBlockWidth = 200.0f;
+	static constexpr float startingBlockLength = 100.0f;
+	Vec2 startingBlockTopLeft;
+	Vec2 startingBlockBottomLeft;
 
 private:
 	Color pathColor = Color(0,165,255);
