@@ -62,6 +62,10 @@ public:
 
 		void drawStringSized(char string[], int xScreen, int yScreen, int size, Color c);
 		void drawStringSizedCenter(char string[], int xScreen, int yScreen, int size, Color c);
+
+		void drawIntSized(int n, int xScreen, int yScreen, int size, Color c);
+		void drawIntSizedCenter(int n, int xScreen, int yScreen, int size, Color c);
+		void drawIntSizedRight(int n, int xScreen, int yScreen, int size, Color c);
 private:
 	int xText;
 	int yText;

@@ -639,6 +639,37 @@ void Text::drawStringSizedCenter(char string[], int xScreen, int yScreen, int si
 	drawStringSized(string, xScreen, yScreen, size, c);
 }
 
+void Text::drawIntSized(int n, int xScreen, int yScreen, int size, Color c)
+{
+	int x_old = xText;
+	int y_old = yText;
+	int size_old = pixelSize;
+
+	xText = xScreen;
+	yText = yScreen;
+	pixelSize = size;
+
+	drawint(n, 0, 0, c);
+
+	xText = x_old;
+	yText = y_old;
+	pixelSize = size_old;
+}
+
+void Text::drawIntSizedCenter(int n, int xScreen, int yScreen, int size, Color c)
+{
+	xScreen -= nrcifre(n) * size * 5 / 2;
+	yScreen -= size * 7 / 2;
+	drawIntSized(n, xScreen, yScreen, size, c);
+}
+
+void Text::drawIntSizedRight(int n, int xScreen, int yScreen, int size, Color c)
+{
+	xScreen -= nrcifre(n) * size * 5;
+	//yScreen -= size * 7 / 2;
+	drawIntSized(n, xScreen, yScreen, size, c);
+}
+
 
 
 
