@@ -5,7 +5,7 @@ Path::Path(int&score,int&highScore,float speed, Vec2 cornerDir)
 	:
 	score(score),
 	highScore(highScore),
-	first(new Corner(nullptr, nullptr, Graphics::GetCenter() - Vec2( width / 2.0f, -1.0f))),
+	first(new Corner(nullptr, nullptr, Graphics::GetCenter())),
 	last(first),
 	speed(speed),
 	cornerDir(cornerDir.GetNormalized()),
@@ -14,11 +14,16 @@ Path::Path(int&score,int&highScore,float speed, Vec2 cornerDir)
 	lengthRange(70,200)
 {
 	cornerDir.Normalize();
-	first->pos -= cornerDir * width;
+
 
 	cornerDir.x *= -1.0f;
 	Vec2 startingBlockDelta = cornerDir * startingBlockWidth * -1.0f + Vec2(0.5f, 0.5f);
-	startingBlockTopLeft = Graphics::GetCenter() + cornerDir * (startingBlockWidth / 2.0f);
+
+	cornerDir.x *= -1.0f;
+	startingBlockTopLeft = first->pos;
+	first->pos -= cornerDir * (width * perspective + 0.5f);
+	
+	cornerDir.x *= -1.0f;
 	startingBlockTopRight = startingBlockTopLeft + startingBlockDelta;
 
 	cornerDir.x *= -1.0f;
@@ -26,18 +31,6 @@ Path::Path(int&score,int&highScore,float speed, Vec2 cornerDir)
 	startingBlockBottomRight = startingBlockBottomLeft + startingBlockDelta;
 
 
-	SpawnCorner();
-	cornerDir.x *= -1.0f;
-	SpawnCorner();
-	cornerDir.x *= -1.0f;
-	SpawnCorner();
-	SpawnCorner();
-	SpawnCorner();
-	SpawnCorner();
-	SpawnCorner();
-	SpawnCorner();
-	SpawnCorner();
-	SpawnCorner();
 	SpawnCorner();
 	SetCurrBlock();
 }

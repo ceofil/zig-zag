@@ -56,8 +56,8 @@ private:
 	std::uniform_int_distribution<int> lengthRange;
 
 private:
-	static constexpr float startingBlockWidth = 200.0f;
-	static constexpr float startingBlockLength = 100.0f;
+	static constexpr float startingBlockWidth = 150.0f;
+	static constexpr float startingBlockLength = 150.0f;
 	Vec2 startingBlockTopLeft;
 	Vec2 startingBlockTopRight;
 	Vec2 startingBlockBottomLeft;
