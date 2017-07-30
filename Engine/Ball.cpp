@@ -16,7 +16,7 @@ void Ball::Draw(Graphics & gfx) const
 void Ball::Update(Keyboard & kbd, float dt)
 {
 	pos += dir * speed * dt;
-	
+	KeepInsideScreen();
 
 	// change dirrection 
 	if (!kbd.KeyIsEmpty())
@@ -32,4 +32,29 @@ void Ball::Update(Keyboard & kbd, float dt)
 float Ball::GetX() const
 {
 	return pos.x;
+}
+
+void Ball::SetX(float x)
+{
+	pos.x = x;
+}
+
+void Ball::SetDirToRight()
+{
+	if(dir.x < 0.0f)
+	{
+		dir.x *= -1.0f;
+	}
+}
+
+void Ball::KeepInsideScreen()
+{	
+	if (pos.x < radius)
+	{
+		pos.x = radius;
+	}
+	if (pos.x >= float(Graphics::ScreenWidth) - radius)
+	{
+		pos.x = float(Graphics::ScreenWidth) - radius - 1.0f;
+	}
 }

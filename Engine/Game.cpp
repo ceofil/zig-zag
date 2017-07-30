@@ -27,7 +27,7 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	ball(Graphics::GetCenter(), 110.0f),
-	path(score, highScore, 110.0f, Vec2(2.0f,-1.0f)),
+	path(score, highScore, 110.0f, Vec2(2.0f,-1.0f), ball),
 	txt(gfx,0,0,2,2,1000,1000)
 {
 	LoadHighScore();
@@ -61,6 +61,7 @@ void Game::UpdateModel(float dt)
 	if (path.ContainsBall(ball.GetX()) == false)
 	{
 		score = 0;
+		path.Reset(ball);
 	}
 }
 

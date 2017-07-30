@@ -1,38 +1,44 @@
 #include "Path.h"
 #include <algorithm>
 
-Path::Path(int&score,int&highScore,float speed, Vec2 cornerDir)
+Path::Path(int&score,int&highScore,float speed, Vec2 cornerDir, Ball& ball)
 	:
 	score(score),
 	highScore(highScore),
-	first(new Corner(nullptr, nullptr, Graphics::GetCenter())),
-	last(first),
-	speed(speed),
-	cornerDir(cornerDir.GetNormalized()),
+	startingSpeed(speed),
+	startingCornerDir(cornerDir.GetNormalized()),
 	perspective(-cornerDir.y / cornerDir.x),
 	rng(rd()),
 	lengthRange(70,200)
 {
-	cornerDir.Normalize();
+	Reset(ball);
+}
 
+void Path::Reset(Ball& ball)
+{
+	speed = startingSpeed;
+	cornerDir = startingCornerDir;
 
-	cornerDir.x *= -1.0f;
-	Vec2 startingBlockDelta = cornerDir * startingBlockWidth * -1.0f + Vec2(0.5f, 0.5f);
+	//delete the current corners
+	Corner* ptr = first;
+	while (ptr)
+	{
+		Corner* nxt = ptr->next;
+		delete ptr;
+		ptr = nxt;
+	}
 
-	cornerDir.x *= -1.0f;
-	startingBlockTopLeft = first->pos;
-	first->pos -= cornerDir * (width * perspective + 0.5f);
-	
-	cornerDir.x *= -1.0f;
-	startingBlockTopRight = startingBlockTopLeft + startingBlockDelta;
+	first = new Corner(nullptr, nullptr, Graphics::GetCenter());
+	last = first;
 
-	cornerDir.x *= -1.0f;
-	startingBlockBottomLeft = startingBlockTopLeft - cornerDir * startingBlockLength;
-	startingBlockBottomRight = startingBlockBottomLeft + startingBlockDelta;
+	SetStartingBlock(this->cornerDir);
 
-
+	//spawning another corner so there will be one below yCenter and one above, the one that is above will become currBlock
 	SpawnCorner();
 	SetCurrBlock();
+
+	ball.SetX(float(Graphics::ScreenWidth/2) + width / 2.0f);
+	ball.SetDirToRight();
 }
 
 Path::~Path()
@@ -164,6 +170,7 @@ void Path::Update(float dt)
 	}
 }
 
+
 void Path::AddCorner(Vec2 pos)
 {
 	first = new Corner(nullptr, first, pos);
@@ -217,6 +224,24 @@ void Path::DrawStartingBlock(Graphics & gfx)
 	DrawBlock(startingBlockBottomLeft, startingBlockBottomRight, 0, wallsColorLeft, gfx);
 	DrawBlock(startingBlockTopRight, startingBlockBottomRight, 0, wallsColorRight, gfx);
 }
+
+void Path::SetStartingBlock(Vec2 cornerDir)
+{
+	cornerDir.x *= -1.0f;
+	Vec2 startingBlockDelta = cornerDir * startingBlockWidth * -1.0f + Vec2(0.5f, 0.5f);
+
+	cornerDir.x *= -1.0f;
+	startingBlockTopLeft = first->pos;
+	first->pos -= cornerDir * (width * perspective + 0.5f);
+
+	cornerDir.x *= -1.0f;
+	startingBlockTopRight = startingBlockTopLeft + startingBlockDelta;
+
+	cornerDir.x *= -1.0f;
+	startingBlockBottomLeft = startingBlockTopLeft - cornerDir * startingBlockLength;
+	startingBlockBottomRight = startingBlockBottomLeft + startingBlockDelta;
+}
+
 
 bool Path::ContainsBall(float xBall)
 {

@@ -7,7 +7,8 @@ class Path
 {
 public:
 	Path() = default;
-	Path( int& score, int& highScore, float speed, Vec2 cornerDir );
+	Path( int& score, int& highScore, float speed, Vec2 cornerDir, Ball& ball );
+	void Reset(Ball& ball);
 	~Path();
 	void Draw( Graphics& gfx );
 	void DrawBlock(Vec2 A, Vec2 B, float width, Color c, Graphics& gfx );
@@ -43,6 +44,8 @@ private:
 	float speed;
 	Vec2 cornerDir;
 	float perspective;
+	float startingSpeed;
+	Vec2 startingCornerDir;
 
 private:
 	Color pathColor = Color(0,165,255);
@@ -63,5 +66,6 @@ private:
 	Vec2 startingBlockBottomLeft;
 	Vec2 startingBlockBottomRight;
 	void DrawStartingBlock(Graphics& gfx);
+	void SetStartingBlock(Vec2 cornerDir);
 };
 
