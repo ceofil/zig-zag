@@ -5,7 +5,7 @@
 class Text
 {
 public:
-	Text(Graphics& gfx, int xup, int yup, int xd, int yd, int wi, int he);
+	Text(Graphics & gfx, int x_in, int y_in, int size_in);
 	void DrawCell(int x, int y, Color c);
 	void Draw4Line(int x, int y, Color c);
 	void Draw7Col(int x, int y, Color c);
@@ -57,17 +57,14 @@ public:
 		void drawV(int xpoz, int ypoz, Color c);
 		void drawU(int xpoz, int ypoz, Color c);
 
-		void drawstring(char string[],int xpoz,int ypoz,Color c);
-		void drawstringCenter(char string[], int xpoz, int ypoz, Color c);
-	
-	int getw();
-	int geth();
+		void drawString(char string[],int xpoz,int ypoz,Color c);
+		void drawStringCenter(char string[], int xpoz, int ypoz, Color c);
+
+		void drawStringSized(char string[], int xScreen, int yScreen, int size, Color c);
+		void drawStringSizedCenter(char string[], int xScreen, int yScreen, int size, Color c);
 private:
-	int xtext=1;
-	int ytext=1;
-	int xdim=10;
-	int ydim=10;
-	int w = gfx.ScreenWidth / xdim;
-	int h = gfx.ScreenHeight / ydim;
+	int xText;
+	int yText;
+	int pixelSize;
 	Graphics& gfx;
 };

@@ -94,11 +94,11 @@ void Path::DrawBlock(Vec2 topLeft, Vec2 bottomLeft, float width, Color c, Graphi
 				gfx.DrawHorizontalLine(y, x, x + int(width), c);
 				if (dx > 0)
 				{
-					gfx.DrawFadedVerticalLine(x, y, y + 100, wallsColorLeft);
+					gfx.DrawFadedVerticalLine(x, y, y + wallHeight, wallsColorLeft);
 				}
 				else
 				{
-					gfx.DrawFadedVerticalLine(x + int(width), y, y + 100, wallsColorRight);
+					gfx.DrawFadedVerticalLine(x + int(width), y, y + wallHeight, wallsColorRight);
 				}
 			}
 
@@ -120,11 +120,11 @@ void Path::DrawBlock(Vec2 topLeft, Vec2 bottomLeft, float width, Color c, Graphi
 				gfx.DrawHorizontalLine(y, x, x + int(width), c);
 				if (dx > 0)
 				{
-					gfx.DrawFadedVerticalLine(x, y, y + 100, wallsColorLeft);
+					gfx.DrawFadedVerticalLine(x, y, y + wallHeight, wallsColorLeft);
 				}
 				else
 				{
-					gfx.DrawFadedVerticalLine(x + int(width), y, y + 100, wallsColorRight);
+					gfx.DrawFadedVerticalLine(x + int(width), y, y + wallHeight, wallsColorRight);
 				}
 			}
 		}

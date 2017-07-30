@@ -1,21 +1,17 @@
 #include "Text.h"
 
-Text::Text(Graphics & gfx, int xup, int yup, int xd, int yd,int wi,int he)
+Text::Text(Graphics & gfx, int x_in, int y_in, int size_in)
 	:
 	gfx(gfx)
 {
-	xtext = xup;
-	ytext = yup;
-	xdim = xd;
-	ydim = yd;
-	w = wi;
-	h = he;
+	xText = x_in;
+	yText = y_in;
+	pixelSize = size_in;
 }
 
 void Text::DrawCell(int x, int y, Color c)
 {
-	gfx.DrawRectPoints(xtext + xdim*x,ytext + ydim*y, xtext + xdim*(x+1), ytext + ydim*(y+1), c);
-
+	gfx.DrawRectPoints(xText + pixelSize*x,yText + pixelSize*y, xText + pixelSize*(x+1), yText + pixelSize*(y+1), c);
 }
 
 void Text::Draw4Line(int poz, int y, Color c)
@@ -451,10 +447,10 @@ void Text::drawU(int xpoz, int ypoz, Color c)
 	Draw7Col(xpoz + 3, ypoz, c);
 }
 
-void Text::drawstring(char string[], int xpoz, int ypoz, Color c)
+void Text::drawString(char string[], int xpoz, int ypoz, Color c)
 {
 	int poz = xpoz;
-	for (int i = 0; i < strlen(string); i++) {
+	for (int i = 0; i < string[i] != 0; i++) {
 		if (string[i] == 'A' || string[i] == 'a') {
 			drawA(poz, ypoz, c);
 			poz += 5;
@@ -614,22 +610,36 @@ void Text::drawstring(char string[], int xpoz, int ypoz, Color c)
 	}
 }
 
-void Text::drawstringCenter(char string[], int xpoz, int ypoz, Color c)
+void Text::drawStringCenter(char string[], int xpoz, int ypoz, Color c)
 {
-	drawstring(string, xpoz - strlen(string) * 5 / 2, ypoz, c);
+	drawString(string, xpoz - int(strlen(string)) * 5 / 2, ypoz - 3, c);
+}
+
+void Text::drawStringSized(char string[], int xScreen, int yScreen, int size, Color c)
+{
+	int x_old = xText;
+	int y_old = yText;
+	int size_old = pixelSize;
+
+	xText = xScreen;
+	yText = yScreen;
+	pixelSize = size;
+
+	drawString(string, 0, 0, c);
+
+	xText = x_old;
+	yText = y_old;
+	pixelSize = size_old;
+}
+
+void Text::drawStringSizedCenter(char string[], int xScreen, int yScreen, int size, Color c)
+{
+	xScreen -= int(strlen(string)) * size * 5 / 2;
+	yScreen -= size * 7 / 2;
+	drawStringSized(string, xScreen, yScreen, size, c);
 }
 
 
 
 
 
-
-
-int Text::getw()
-{
-	return w;
-}
-int Text::geth()
-{
-	return h;
-}

@@ -41,6 +41,7 @@ private:
 
 private:
 	static constexpr float width = 50.0f;
+	static constexpr int wallHeight = 75;
 	float speed;
 	Vec2 cornerDir;
 	float perspective;
