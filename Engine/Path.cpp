@@ -1,11 +1,11 @@
 #include "Path.h"
 #include <algorithm>
 
-Path::Path(int&score,int&highScore,float speed, Vec2 cornerDir, Ball& ball)
+Path::Path(int&score, int&highScore, float& speed, Vec2 cornerDir, Ball& ball)
 	:
 	score(score),
 	highScore(highScore),
-	startingSpeed(speed),
+	speed(speed),
 	startingCornerDir(cornerDir.GetNormalized()),
 	perspective(-cornerDir.y / cornerDir.x),
 	rng(rd()),
@@ -16,7 +16,6 @@ Path::Path(int&score,int&highScore,float speed, Vec2 cornerDir, Ball& ball)
 
 void Path::Reset(Ball& ball)
 {
-	speed = startingSpeed;
 	cornerDir = startingCornerDir;
 
 	//delete the current corners
@@ -158,6 +157,7 @@ void Path::Update(float dt)
 		{
 			highScore = score;
 		}
+		speed += 0.3f;
 		currBlock = currBlock->previous;
 	}
 

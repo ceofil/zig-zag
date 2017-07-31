@@ -56,6 +56,8 @@ private:
 	int score = 0;
 	int highScore = 0;
 	int gamesPlayed = 0;
+	float speed = 125.0f;
+	float startingSpeed = 125.0f;
 
 	enum class GameState
 	{

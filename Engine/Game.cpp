@@ -27,8 +27,8 @@ Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	ball(Graphics::GetCenter(), 110.0f),
-	path(score, highScore, 110.0f, Vec2(2.0f,-1.0f), ball),
+	ball(Graphics::GetCenter(), speed),
+	path(score, highScore, speed, Vec2(2.0f,-1.0f), ball),
 	txt(gfx, 0, 0, 1)
 {
 	LoadData();
@@ -91,6 +91,7 @@ void Game::UpdateModel(float dt)
 			{
 				if(e.GetCode() == VK_RETURN)
 				{
+					speed = startingSpeed;
 					score = 0;
 					path.Reset(ball);
 					state = GameState::firstMenu;

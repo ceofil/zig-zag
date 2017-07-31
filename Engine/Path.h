@@ -7,7 +7,7 @@ class Path
 {
 public:
 	Path() = default;
-	Path( int& score, int& highScore, float speed, Vec2 cornerDir, Ball& ball );
+	Path( int& score, int& highScore, float& speed, Vec2 cornerDir, Ball& ball );
 	void Reset(Ball& ball);
 	~Path();
 	void Draw( Graphics& gfx );
@@ -18,6 +18,7 @@ public:
 private:
 	int& score;
 	int& highScore;
+	float& speed;
 
 private:
 	struct Corner
@@ -42,10 +43,8 @@ private:
 private:
 	static constexpr float width = 50.0f;
 	static constexpr int wallHeight = 75;
-	float speed;
 	Vec2 cornerDir;
 	float perspective;
-	float startingSpeed;
 	Vec2 startingCornerDir;
 
 private:
