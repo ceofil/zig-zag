@@ -461,7 +461,7 @@ void Graphics::DrawLine(Vec2 A, Vec2 B, Color c)
 
 		for (int y = y1; y <= y2; y++)
 		{
-			int x = int(m * y + b + 0.5f);
+			int x = int(m * float(y) + b + 0.5f);
 			if(insideScreen(x,y))
 			{ 
 				PutPixel(x, y, c);
@@ -479,7 +479,7 @@ void Graphics::DrawLine(Vec2 A, Vec2 B, Color c)
 
 		for (int x = x1; x <= x2; x++)
 		{
-			int y = int(m * x + b + 0.5f);
+			int y = int(m * float(x) + b + 0.5f);
 			if (insideScreen(x, y))
 			{
 				PutPixel(x, y, c);
@@ -610,8 +610,8 @@ void Graphics::DrawTriangle(Vec2 A, Vec2 B, Vec2 C, Color clr)
 
 		for (int y = y1; y <= y2; y++)
 		{
-			int x = int(m * y + b + 0.5f);
-			Vec2 point = Vec2(float(x), float(y));
+			float x = m * y + b + 0.5f;
+			Vec2 point = Vec2(x, float(y));
 			DrawLine(point, C, clr);
 		}
 	}
@@ -630,6 +630,13 @@ void Graphics::DrawTriangle(Vec2 A, Vec2 B, Vec2 C, Color clr)
 			DrawLine(point, C, clr);
 		}
 	}
+}
+
+void Graphics::DrawTripleLayerTriangle(Vec2 A, Vec2 B, Vec2 C, Color clr)
+{
+	DrawTriangle(A, B, C, clr);
+	DrawTriangle(B, C, A, clr);
+	DrawTriangle(C, A, B, clr);
 }
 
 
