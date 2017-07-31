@@ -9,7 +9,7 @@ Path::Path(int&score,int&highScore,float speed, Vec2 cornerDir, Ball& ball)
 	startingCornerDir(cornerDir.GetNormalized()),
 	perspective(-cornerDir.y / cornerDir.x),
 	rng(rd()),
-	lengthRange(70,200)
+	lengthRange(35,200)
 {
 	Reset(ball);
 }
@@ -34,7 +34,8 @@ void Path::Reset(Ball& ball)
 	SetStartingBlock(this->cornerDir);
 
 	//spawning another corner so there will be one below yCenter and one above, the one that is above will become currBlock
-	SpawnCorner();
+	SpawnCorner(); SpawnCorner(); SpawnCorner(); SpawnCorner(); SpawnCorner(); 
+	SpawnCorner(); SpawnCorner(); SpawnCorner(); SpawnCorner(); SpawnCorner();
 	SetCurrBlock();
 
 	ball.SetX(float(Graphics::ScreenWidth/2) + width / 2.0f);

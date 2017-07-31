@@ -21,6 +21,7 @@
 #include "MainWindow.h"
 #include "Game.h"
 #include <fstream>
+#include <stdio.h>
 
 Game::Game(MainWindow& wnd)
 	:
@@ -30,12 +31,12 @@ Game::Game(MainWindow& wnd)
 	path(score, highScore, 110.0f, Vec2(2.0f,-1.0f), ball),
 	txt(gfx, 0, 0, 1)
 {
-	LoadHighScore();
+	LoadData();
 }
 
 Game::~Game()
 {
-	SaveHighScore();
+	SaveData();
 }
 
 void Game::Go()
@@ -56,21 +57,88 @@ void Game::Go()
 
 void Game::UpdateModel(float dt)
 {
-	ball.Update(wnd.kbd, dt);
-	path.Update(dt); 
-	if (path.ContainsBall(ball.GetX()) == false)
+	switch (state)
 	{
-		score = 0;
-		path.Reset(ball);
+	case GameState::firstMenu:
+	{
+		if (!wnd.kbd.KeyIsEmpty())
+		{
+			const auto e = wnd.kbd.ReadKey();
+			if (e.IsPress())
+			{
+				gamesPlayed++;
+				state = GameState::started;
+			}
+		}
+		break;
+	}
+	case GameState::started:
+	{
+		ball.Update(wnd.kbd, dt);
+		path.Update(dt);
+		if (path.ContainsBall(ball.GetX()) == false)
+		{
+			state = GameState::died;
+		}
+		break;
+	}
+	case GameState::died:
+	{
+		if (!wnd.kbd.KeyIsEmpty())
+		{
+			const auto e = wnd.kbd.ReadKey();
+			if (e.IsPress())
+			{
+				if(e.GetCode() == VK_RETURN)
+				{
+					score = 0;
+					path.Reset(ball);
+					state = GameState::firstMenu;
+				}
+			}
+		}
+		break;
+	}
 	}
 }
 
 
 void Game::ComposeFrame()
 {
-	path.Draw(gfx);
-	ball.Draw(gfx);
-	txt.drawIntSizedRight(score, Graphics::ScreenWidth - 25, 25, 3, Colors::White);
+	switch (state)
+	{
+	case GameState::firstMenu:
+	{
+		path.Draw(gfx);
+		txt.drawStringSizedCenter("zigzag", xCenter, 150, 7, Colors::White);
+		txt.drawStringSizedCenter("press any key to play", xCenter, 350, 1, Colors::White);
+
+		sprintf(chBuffer, "best score` %i", highScore);
+		txt.drawStringSizedCenter(chBuffer, xCenter, 520, 3, Colors::White);
+		sprintf(chBuffer, "games played %i", gamesPlayed);
+		txt.drawStringSizedCenter(chBuffer, xCenter, 550, 3, Colors::White);
+		break;
+	}
+	case GameState::started:
+	{
+		path.Draw(gfx);
+		ball.Draw(gfx);
+		txt.drawIntSizedRight(score, Graphics::ScreenWidth - 25, 25, 3, Colors::White);
+		break;
+	}
+	case GameState::died:
+	{
+		path.Draw(gfx);
+		txt.drawStringSizedCenter("game over", xCenter, 150, 7, Colors::White);
+
+		txt.drawIntSizedCenter(score, xCenter, 320, 10, Colors::White);
+		sprintf(chBuffer, "best %i", highScore);
+		txt.drawStringSizedCenter(chBuffer, xCenter, 520, 3, Colors::White);
+
+		txt.drawStringSizedCenter("press enter to retry", xCenter, Graphics::ScreenHeight - 30, 1, Colors::White);
+		break;
+	}
+	}
 
 	//grid
 	//gfx.DrawHorizontalLine(300, 0, 399, Colors::Red);
@@ -78,14 +146,17 @@ void Game::ComposeFrame()
 
 }
 
-void Game::LoadHighScore()
+void Game::LoadData()
 {
 	std::ifstream in("hs.txt");
 	in >> highScore;
+	in >> gamesPlayed;
 }
 
-void Game::SaveHighScore()
+void Game::SaveData()
 {
 	std::ofstream out("hs.txt");
 	out << highScore;
+	out << " ";
+	out << gamesPlayed;
 }

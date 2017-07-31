@@ -41,8 +41,8 @@ private:
 	void UpdateModel(float dt);
 	/********************************/
 	/*  User Functions              */
-	void LoadHighScore();
-	void SaveHighScore();
+	void LoadData();
+	void SaveData();
 	/********************************/
 private:
 	MainWindow& wnd;
@@ -55,5 +55,16 @@ private:
 	Text txt;
 	int score = 0;
 	int highScore = 0;
+	int gamesPlayed = 0;
+
+	enum class GameState
+	{
+		firstMenu,
+		started,
+		died
+	};
+	GameState state = GameState::firstMenu;
+	static constexpr int xCenter = Graphics::ScreenWidth / 2;
+	char chBuffer[100];
 	/********************************/
 };
