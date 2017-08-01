@@ -28,10 +28,12 @@ Game::Game(MainWindow& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	ball(Graphics::GetCenter(), speed),
-	path(score, highScore, speed, Vec2(2.0f,-1.0f), ball),
-	txt(gfx, 0, 0, 1)
+	path(score, highScore, speed, Vec2(2.0f, -1.0f), ball),
+	txt(gfx, 0, 0, 1),
+	music(L"awesomeness.wav", 0.0f, 47.0f)
 {
 	LoadData();
+	music.Play();
 }
 
 Game::~Game()

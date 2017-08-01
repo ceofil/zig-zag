@@ -27,6 +27,7 @@
 #include "Ball.h"
 #include "Path.h"
 #include "Text.h"
+#include "Sound.h"
 
 class Game
 {
@@ -53,6 +54,7 @@ private:
 	Ball ball;
 	Path path;
 	Text txt;
+	Sound music;
 	int score = 0;
 	int highScore = 0;
 	int gamesPlayed = 0;

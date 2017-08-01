@@ -268,11 +268,11 @@ void Text::drawB(int xpoz, int ypoz, Color c)
 }
 void Text::drawC(int xpoz, int ypoz, Color c)
 {
-	DrawLineK(xpoz + 1, ypoz, 2, c);
-	DrawLineK(xpoz + 1, ypoz+6, 2, c);
 	DrawColK(xpoz, ypoz + 1, 5, c);
 	DrawCell(xpoz + 3, ypoz + 1, c);
 	DrawCell(xpoz + 3, ypoz + 5, c);
+	Draw4Line(xpoz, ypoz, c);
+	Draw4Line(xpoz, ypoz + 6, c);
 }
 void Text::drawD(int xpoz, int ypoz, Color c)
 {
