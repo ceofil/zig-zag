@@ -216,8 +216,8 @@ void Path::SetCurrBlock()
 void Path::DrawStartingBlock(Graphics & gfx)
 {
 	//path
-	gfx.DrawTripleLayerTriangle(startingBlockTopLeft, startingBlockTopRight, startingBlockBottomLeft, pathColor);
-	gfx.DrawTripleLayerTriangle(startingBlockBottomLeft, startingBlockBottomRight, startingBlockTopRight, pathColor);
+	gfx.DrawTriangle(startingBlockTopLeft, startingBlockTopRight, startingBlockBottomLeft, pathColor);
+	gfx.DrawTriangle(startingBlockBottomLeft, startingBlockBottomRight, startingBlockTopRight, pathColor);
 
 
 	//shadow

@@ -625,8 +625,8 @@ void Graphics::DrawTriangle(Vec2 A, Vec2 B, Vec2 C, Color clr)
 
 		for (int x = x1; x <= x2; x++)
 		{
-			int y = int(m * x + b + 0.5f);
-			Vec2 point = Vec2(float(x), float(y));
+			float y = m * float(x) + b + 0.5f;
+			Vec2 point = Vec2(float(x), y);
 			DrawLine(point, C, clr);
 		}
 	}
