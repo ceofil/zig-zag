@@ -27,17 +27,18 @@ void Path::Reset(Ball& ball)
 		ptr = nxt;
 	}
 
-	first = new Corner(nullptr, nullptr, Graphics::GetCenter());
+	first = new Corner(nullptr, nullptr, Graphics::GetCenter() + Vec2(0.0f,cornerDir.y * startingBlockWidth * 1.0f));
 	last = first;
 
 	SetStartingBlock(this->cornerDir);
 
-	//spawning another corner so there will be one below yCenter and one above, the one that is above will become currBlock
+	//one call would be enough but I want the path to be drawn while in menu
 	SpawnCorner(); SpawnCorner(); SpawnCorner(); SpawnCorner(); SpawnCorner(); 
 	SpawnCorner(); SpawnCorner(); SpawnCorner(); SpawnCorner(); SpawnCorner();
-	SetCurrBlock();
+	
+	currBlock = last->previous;
 
-	ball.SetX(float(Graphics::ScreenWidth/2) + width / 2.0f);
+	ball.SetX(float(Graphics::ScreenWidth/2));
 	ball.SetDirToRight();
 }
 
@@ -65,9 +66,6 @@ void Path::Draw(Graphics & gfx)
 	{
 		DrawStartingBlock(gfx);
 	}
-
-	//highlight for the currBlock
-	//gfx.DrawParallelogram(currBlock->pos, currBlock->next->pos, width, Color(15,180,255));
 }
 
 void Path::DrawBlock(Vec2 topLeft, Vec2 bottomLeft, float width, Color c, Graphics & gfx)
@@ -199,20 +197,6 @@ void Path::SpawnCorner()
 	AddCorner(nextCornerPos);
 }
 
-void Path::SetCurrBlock()
-{
-	Corner* ptr = first;
-	while (ptr)
-	{
-		if (ptr->pos.y > yCenter )
-		{
-			currBlock = ptr->previous;
-			break;
-		}
-		ptr = ptr->next;
-	}
-}
-
 void Path::DrawStartingBlock(Graphics & gfx)
 {
 	//path
@@ -242,12 +226,17 @@ void Path::SetStartingBlock(Vec2 cornerDir)
 	startingBlockBottomRight = startingBlockBottomLeft + startingBlockDelta;
 }
 
-
-bool Path::ContainsBall(float xBall)
+bool Path::StartingBlockContainsBall(float xBall)
 {
-	Vec2 A = currBlock->pos;
-	Vec2 B = currBlock->next->pos;
-	
+	Vec2 A = startingBlockTopLeft;
+	Vec2 B = startingBlockBottomLeft;
+
+	if (B.y < yCenter)
+	{
+		A = startingBlockBottomLeft;
+		B = startingBlockBottomRight;
+	}
+
 	float dx = B.x - A.x;
 	float dy = B.y - A.y;
 
@@ -256,8 +245,32 @@ bool Path::ContainsBall(float xBall)
 
 	float x = m * yCenter + b + 0.5f;
 
+	return xBall > x && xBall < float(Graphics::ScreenWidth) - x;
+}
 
-	return xBall > x && xBall < x + width;
+
+bool Path::ContainsBall(float xBall)
+{
+	if (startingBlockBottomRight.y < yCenter || startingBlockTopLeft.y > yCenter || last->pos.y >yCenter)
+	{
+		Vec2 A = currBlock->pos;
+		Vec2 B = currBlock->next->pos;
+
+		float dx = B.x - A.x;
+		float dy = B.y - A.y;
+
+		float m = dx / dy;
+		float b = A.x - m * A.y;
+
+		float x = m * yCenter + b + 0.5f;
+
+
+		return xBall > x && xBall < x + width;
+	}
+	else
+	{
+		return StartingBlockContainsBall(xBall);
+	}
 }
 
 Path::Corner::Corner(Corner * previous, Corner * next, Vec2 pos)

@@ -7,12 +7,12 @@ class Path
 {
 public:
 	Path() = default;
-	Path( int& score, int& highScore, float& speed, Vec2 cornerDir, Ball& ball );
+	Path(int& score, int& highScore, float& speed, Vec2 cornerDir, Ball& ball);
 	void Reset(Ball& ball);
 	~Path();
-	void Draw( Graphics& gfx );
-	void DrawBlock(Vec2 A, Vec2 B, float width, Color c, Graphics& gfx );
-	void Update( float dt);
+	void Draw(Graphics& gfx);
+	void DrawBlock(Vec2 A, Vec2 B, float width, Color c, Graphics& gfx);
+	void Update(float dt);
 	bool ContainsBall(float xBall);
 
 private:
@@ -37,8 +37,7 @@ private:
 	void AddCorner(Vec2 pos);
 	void DeleteLastCorner();
 	void SpawnCorner();
-	void SetCurrBlock();
-	
+
 
 private:
 	static constexpr float width = 50.0f;
@@ -48,8 +47,8 @@ private:
 	Vec2 startingCornerDir;
 
 private:
-	Color pathColor = Color(0,165,255);
-	Color wallsColorRight = Color(0,85,165);
+	Color pathColor = Color(0, 165, 255);
+	Color wallsColorRight = Color(0, 85, 165);
 	Color wallsColorLeft = Color(0, 105, 195);
 	static constexpr int yCenter = Graphics::ScreenHeight / 2;
 
@@ -67,5 +66,6 @@ private:
 	Vec2 startingBlockBottomRight;
 	void DrawStartingBlock(Graphics& gfx);
 	void SetStartingBlock(Vec2 cornerDir);
+	bool StartingBlockContainsBall(float xball);
 };
 

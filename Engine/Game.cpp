@@ -118,8 +118,9 @@ void Game::ComposeFrame()
 	case GameState::firstMenu:
 	{
 		path.Draw(gfx);
+		ball.Draw(gfx);
 		txt.drawStringSizedCenter("zigzag", xCenter, 150, 7, Colors::White);
-		txt.drawStringSizedCenter("press any key to play", xCenter, 350, 1, Colors::White);
+		txt.drawStringSizedCenter("press any key to play", xCenter, Graphics::ScreenHeight / 2 - 30, 1, Color(0, 105, 195));
 
 		sprintf(chBuffer, "best score` %i", highScore);
 		txt.drawStringSizedCenter(chBuffer, xCenter, 520, 3, Colors::White);
