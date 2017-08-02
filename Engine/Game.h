@@ -54,12 +54,13 @@ private:
 	Ball ball;
 	Path path;
 	Text txt;
-	Sound music;
+	Sound soundtrack;
+	Sound menuMusic;
 	int score = 0;
 	int highScore = 0;
 	int gamesPlayed = 0;
-	float speed = 125.0f;
-	float startingSpeed = 125.0f;
+	float speed = 135.0f;
+	float startingSpeed = 135.0f;
 
 	enum class GameState
 	{

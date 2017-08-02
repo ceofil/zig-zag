@@ -30,10 +30,11 @@ Game::Game(MainWindow& wnd)
 	ball(Graphics::GetCenter(), speed),
 	path(score, highScore, speed, Vec2(2.0f, -1.0f), ball),
 	txt(gfx, 0, 0, 1),
-	music(L"awesomeness.wav", 0.0f, 47.0f)
+	soundtrack(L"clearside.wav", 0.0f, 72.0f), // awesomeness.wav", 0.0f, 47.0f), 
+	menuMusic(L"menuMusic.wav", 0.0f, 35.0f)
 {
 	LoadData();
-	music.Play();
+	menuMusic.Play();
 }
 
 Game::~Game()
@@ -70,6 +71,8 @@ void Game::UpdateModel(float dt)
 			{
 				gamesPlayed++;
 				state = GameState::started;
+				menuMusic.StopAll();
+				soundtrack.Play();
 			}
 		}
 		break;
@@ -81,6 +84,8 @@ void Game::UpdateModel(float dt)
 		if (path.ContainsBall(ball.GetX()) == false)
 		{
 			state = GameState::died;
+			soundtrack.StopAll();
+			menuMusic.Play();
 		}
 		break;
 	}

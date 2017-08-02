@@ -157,7 +157,7 @@ void Path::Update(float dt)
 		{
 			highScore = score;
 		}
-		speed += 0.3f;
+		speed += 0.5f;
 		currBlock = currBlock->previous;
 	}
 
